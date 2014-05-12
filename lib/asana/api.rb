@@ -1,5 +1,6 @@
 require 'asana/resources/users'
-#require 'asana/resources/tasks'
+require 'asana/resources/tasks'
+require 'asana/resources/subtasks'
 #require 'asana/resources/projects'
 #require 'asana/resources/tags'
 #require 'asana/resources/stories'
@@ -11,7 +12,8 @@ module Asana
   module API
 
     include Asana::Resources::Users
-    #include Asana::Resources::Tasks
+    include Asana::Resources::Tasks
+    include Asana::Resources::Subtasks
     #include Asana::Resources::Projects
     #include Asana::Resources::Tags
     #include Asana::Resources::Stories
