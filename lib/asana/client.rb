@@ -1,7 +1,12 @@
+require 'faraday'
+require 'faraday_middleware'
 require 'base64'
+
+require 'asana/api'
 
 module Asana
   class Client
+    include Asana::API
 
     attr_accessor :api_token
     attr_accessor :oauth_token
@@ -20,14 +25,17 @@ module Asana
     def request(method, path, options = {})
       response = connection.public_send(method) do |request|
         request.url path
-        request.headers.merge(default_headers)
+        request.headers.update(default_headers)
       end
+
+      response.body
     end
 
     def default_headers
       @default_headers ||= {
         'Content-Type'  => 'application/json',
         'Accept'        => 'application/json',
+        'User-Agent'    => USER_AGENT,
         'Authorization' => authorization_header
       }
     end
@@ -35,10 +43,12 @@ module Asana
     private
 
     def connection(options = {})
-      @connection ||= Faraday.new(url: ENDPOINT) do |faraday|
-        faraday.request  :json
-        faraday.response :logger
-        faraday.adapter  Faraday.default_adapter
+      @connection ||= Faraday.new(url: ENDPOINT) do |conn|
+        conn.response :json
+        #conn.response :logger
+        conn.response :raise_error
+
+        conn.adapter  Faraday.default_adapter
       end
     end
 

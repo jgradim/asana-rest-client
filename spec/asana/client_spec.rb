@@ -29,7 +29,7 @@ describe Asana::Client do
     end
   end
 
-  describe "#authorization_header" do
+  describe "#default_headers" do
     it "sets Basic header for :api_token" do
       basic_header_value = Base64.encode64('1234:')
 
@@ -45,6 +45,10 @@ describe Asana::Client do
       auth_header = client.default_headers['Authorization']
       expect(auth_header).to eq("Bearer 1234")
     end
+  end
+
+  describe "#request" do
+    let!(:client){ Asana::Client.new(oauth_token: '1234') }
   end
 
 end
