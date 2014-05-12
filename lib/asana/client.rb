@@ -23,9 +23,12 @@ module Asana
     end
 
     def request(method, path, options = {})
-      response = connection.public_send(method) do |request|
-        request.url path
+      headers = options[:headers] || {}
+      params  = options[:params]  || {}
+
+      response = connection.public_send(method, path, params) do |request|
         request.headers.update(default_headers)
+        request.headers.update(headers)
       end
 
       response.body
