@@ -19,7 +19,7 @@ describe Asana::Resources::Users do
 
     it "raises error when trying to access a non-existent user" do
       VCR.use_cassette 'user_nonexistent' do
-        expect{ client.user('not-an-user-id') }.to raise_error Faraday::ClientError, /400/
+        expect{ client.user('not-an-user-id') }.to raise_error Asana::Error::BadRequest, /400/
       end
     end
   end
