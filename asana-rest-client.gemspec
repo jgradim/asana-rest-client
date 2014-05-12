@@ -5,11 +5,11 @@ require 'asana/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "asana-rest-client"
-  spec.version       = Asana::Rest::Client::VERSION
+  spec.version       = Asana::VERSION
   spec.authors       = ["João Gradim"]
   spec.email         = ["joao.gradim@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{Ruby client for Asana REST API supporting api tokens and OAuth}
+  spec.description   = %q{Ruby client for Asana REST API supporting api tokens and OAuth}
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -22,4 +22,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.5"
   spec.add_development_dependency "rake"
+  spec.add_development_dependency "rspec"
 end
