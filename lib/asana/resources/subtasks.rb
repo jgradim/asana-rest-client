@@ -11,7 +11,7 @@ module Asana
       end
       
       def set_task_parent(task_id, parent_id, options = {})
-        options.reverse_merge!(params: { parent_id: parent_id })
+        options = set_param(options, :parent_id, parent_id)
         request(:post, "tasks/#{task_id}/setParent", options)
       end
 

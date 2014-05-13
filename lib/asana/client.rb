@@ -2,10 +2,12 @@ require 'faraday'
 require 'faraday_middleware'
 require 'base64'
 
+require 'asana/utils'
 require 'asana/api'
 
 module Asana
   class Client
+    include Asana::Utils
     include Asana::API
 
     attr_accessor :api_token
@@ -34,8 +36,6 @@ module Asana
       response.body
     rescue Faraday::TimeoutError, Timeout::Error => error
       raise Asana::Error::RequestTimeout.new(error.message)
-    rescue JSON::ParserError => error
-      # TODO
     end
 
     def default_headers
@@ -52,7 +52,6 @@ module Asana
     def connection(options = {})
       @connection ||= Faraday.new(url: ENDPOINT) do |conn|
         conn.response :json
-        conn.response :logger
         conn.response :raise_asana_error
 
         conn.adapter  Faraday.default_adapter

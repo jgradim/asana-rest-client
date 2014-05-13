@@ -51,5 +51,43 @@ describe Asana::Client do
     let!(:client){ Asana::Client.new(oauth_token: '1234') }
   end
 
+  describe "#set_param" do
+    let!(:client) { Asana::Client.new(oauth_token: '1234') }
+
+    it "correctly sets param values on empty options hash" do
+      options = client.set_param({}, :a, 1)
+      expect(options).to eq({params: { a: 1} })
+    end
+
+    it "correctly sets values on populated options hash" do
+      options = {
+        params:  { a: 1, b: 2 },
+        headers: { 'User-Agent' => 'user-agent' }
+      }
+
+      options = client.set_param(options, :c, 3)
+
+      expect(options).to eq({
+        params:  { a: 1, b: 2, c: 3 },
+        headers: { 'User-Agent' => 'user-agent' }
+      })
+    end
+
+    it "does not override already set param values" do
+      options = {
+        params:  { a: 1, b: 2 },
+        headers: { 'User-Agent' => 'user-agent' }
+      }
+
+      options = client.set_param(options, :b, 3)
+
+      expect(options).to eq({
+        params:  { a: 1, b: 2 },
+        headers: { 'User-Agent' => 'user-agent' }
+      })
+    end
+
+  end
+
 end
 
