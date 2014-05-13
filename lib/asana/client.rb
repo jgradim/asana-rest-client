@@ -34,7 +34,7 @@ module Asana
       end
 
       response.body
-    rescue Faraday::TimeoutError, Timeout::Error => error
+    rescue Faraday::Error::TimeoutError, Timeout::Error => error
       raise Asana::Error::RequestTimeout.new(error.message)
     end
 
