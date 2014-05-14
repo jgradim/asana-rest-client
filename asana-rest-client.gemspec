@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Asana::VERSION
   spec.authors       = ["João Gradim"]
   spec.email         = ["joao.gradim@gmail.com"]
-  spec.summary       = %q{Ruby client for Asana REST API supporting api tokens and OAuth}
-  spec.description   = %q{Ruby client for Asana REST API supporting api tokens and OAuth}
-  spec.homepage      = ""
+  spec.summary       = %q{Ruby client for Asana REST API}
+  spec.description   = %q{Ruby client for Asana REST API supporting API and OAuth tokens}
+  spec.homepage      = "https://github.com/jgradim/asana-rest-client"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -18,12 +18,12 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "faraday",            "~> 0.8.9"
-  spec.add_dependency "faraday_middleware", "~> 0.9.0"
+  spec.add_dependency "faraday",            "~> 0.8"
+  spec.add_dependency "faraday_middleware", "~> 0.9"
 
-  spec.add_development_dependency "bundler", "~> 1.5"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "rspec"
-  spec.add_development_dependency "webmock"
-  spec.add_development_dependency "vcr"
+  spec.add_development_dependency "bundler" , "~> 1.5"
+  spec.add_development_dependency "rake"    , "~> 10.3"
+  spec.add_development_dependency "rspec"   , "~> 2.14"
+  spec.add_development_dependency "webmock" , "~> 1.15"
+  spec.add_development_dependency "vcr"     , "~> 2.9"
 end
