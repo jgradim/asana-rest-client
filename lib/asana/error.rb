@@ -10,21 +10,21 @@ module Asana
       # @param response [Faraday::Response]
       # @return [Twitter::Error]
       def from_response(response)
-        status, message = response.status.to_i, parse_error(response)
+        status, message = response[:status].to_i, parse_error(response)
         klass = errors[status] || Asana::Error
         klass.new(message)
       end
 
       def parse_error(response)
-        body = if response.body.is_a?(String)
-                 JSON.parse(response.body)
-               elsif response.body.is_a?(Hash)
-                 response.body
+        body = if response[:body].is_a?(String)
+                 JSON.parse(response[:body])
+               elsif response[:body].is_a?(Hash)
+                 response[:body]
                end
 
         error_messages = body['errors'].map{ |error| error['message'] }
 
-        ([response.status] + error_messages).join("\n")
+        ([response[:status]] + error_messages).join("\n")
       end
 
       def errors

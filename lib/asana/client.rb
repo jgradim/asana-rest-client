@@ -1,9 +1,11 @@
+require 'base64'
+
 require 'faraday'
 require 'faraday_middleware'
-require 'base64'
 
 require 'asana/utils'
 require 'asana/api'
+require 'asana/response/raise_error'
 
 module Asana
   class Client
