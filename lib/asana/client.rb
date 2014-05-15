@@ -2,6 +2,7 @@ require 'base64'
 
 require 'faraday'
 require 'faraday_middleware'
+require 'hashie'
 
 require 'asana/utils'
 require 'asana/api'
@@ -53,6 +54,7 @@ module Asana
 
     def connection(options = {})
       @connection ||= Faraday.new(url: ENDPOINT) do |conn|
+        conn.response :mashify
         conn.response :json
         conn.response :raise_asana_error
 
