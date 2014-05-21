@@ -1,7 +1,7 @@
 module Asana
 
   class Error < StandardError
-    attr_reader :code, :rate_limit
+    attr_accessor :code, :retry_after
 
     class << self
 
@@ -12,7 +12,12 @@ module Asana
       def from_response(response)
         status, message = response[:status].to_i, parse_error(response)
         klass = errors[status] || Asana::Error
-        klass.new(message)
+        error = klass.new(message)
+
+        # rate limit reached
+        error.retry_after = response[:response_headers]['retry-after'] if status == 429 
+
+        error
       end
 
       def parse_error(response)

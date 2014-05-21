@@ -36,7 +36,12 @@ module Asana
         request.headers.update(headers)
       end
 
+      clear_rate_limit
+
       response.body
+    rescue Asana::Error::RateLimitReached => error
+      set_rate_limit(error)
+      raise error
     rescue Faraday::Error::TimeoutError, Timeout::Error => error
       raise Asana::Error::RequestTimeout.new(error.message)
     end
@@ -47,6 +52,13 @@ module Asana
         'Accept'        => 'application/json',
         'User-Agent'    => USER_AGENT,
         'Authorization' => authorization_header
+      }
+    end
+
+    def rate_limit
+      {
+        retry_after: @retry_after,
+        resets_at:   @resets_at
       }
     end
 
@@ -69,6 +81,16 @@ module Asana
       elsif @oauth_token
         "Bearer #{@oauth_token}"
       end
+    end
+
+    def clear_rate_limit
+      @retry_after = nil
+      @resets_at   = nil
+    end
+
+    def set_rate_limit(error)
+      @retry_after = error.retry_after.to_i rescue 0
+      @resets_at   = Time.at(Time.now.to_i + Time.at(@retry_after).to_i)
     end
 
   end
